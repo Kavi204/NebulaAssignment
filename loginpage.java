@@ -1,49 +1,37 @@
+package com.example.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.openqa.selenium.WebElement;
 
 public class LoginPage {
-    private WebDriver driver;
 
-    @BeforeClass
-    public void setUp() {
-       
-        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+    WebDriver driver;
 
-        driver = new ChromeDriver();
+    By usernameField = By.id("username");
+    By passwordField = By.id("password");
+    By loginButton = By.id("login_button");
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
     }
 
-    @Test
-    public void testLogin() {
-       
-        driver.get("https://example.com/login");
-
-        driver.findElement(By.id("username")).sendKeys("test_user");
-        driver.findElement(By.id("password")).sendKeys("Test@123");
-
-        driver.findElement(By.id("login_button")).click();
-
-        try {
-            Thread.sleep(2000); 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-     
-        String pageTitle = driver.getTitle();
-        Assert.assertTrue(pageTitle.contains("Dashboard"), "Page title does not contain 'Dashboard'. Actual title: " + pageTitle);
+    public void enterUsername(String username) {
+        WebElement usernameElement = driver.findElement(usernameField);
+        usernameElement.sendKeys(username);
     }
 
-    @AfterClass
-    public void tearDown() {
-     
-        if (driver != null) {
-            driver.quit();
-        }
+    public void enterPassword(String password) {
+        WebElement passwordElement = driver.findElement(passwordField);
+        passwordElement.sendKeys(password);
+    }
+
+    public void clickLoginButton() {
+        WebElement loginButtonElement = driver.findElement(loginButton);
+        loginButtonElement.click();
+    }
+
+    public String getPageTitle() {
+        return driver.getTitle();
     }
 }
